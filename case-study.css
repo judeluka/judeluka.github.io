@@ -1,0 +1,182 @@
+/* Case Study Styles */
+.case-study {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.case-study-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.case-study-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.case-study-header .tagline {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    opacity: 0.9;
+}
+
+.case-study-content {
+    margin-bottom: 4rem;
+}
+
+.project-image {
+    margin-bottom: 3rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.main-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.introduction {
+    margin-bottom: 3rem;
+}
+
+.subsection {
+    margin-bottom: 2.5rem;
+}
+
+.subsection h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.subsection h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.subsection p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+.subsection ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+}
+
+.subsection li {
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.subsection li::before {
+    content: "→";
+    color: var(--accent-color);
+    position: absolute;
+    left: -1.5rem;
+}
+
+/* Tech Stack Icons */
+.tech-stack {
+    margin: 2rem 0;
+}
+
+.tech-icons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.tech-icon {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+}
+
+.tech-icon.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tech-icon:hover {
+    transform: scale(1.2);
+    filter: grayscale(0%);
+}
+
+.tech-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Back Link */
+.case-study-footer {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: rgba(100, 255, 218, 0.1);
+    transform: translateX(-5px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .case-study {
+        padding: 1rem;
+    }
+
+    .case-study-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .case-study-header .tagline {
+        font-size: 1.25rem;
+    }
+
+    .subsection h2 {
+        font-size: 1.75rem;
+    }
+
+    .subsection h3 {
+        font-size: 1.25rem;
+    }
+
+    .tech-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .tech-icon {
+        transition: none;
+    }
+
+    .back-link:hover {
+        transform: none;
+    }
+} 

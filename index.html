@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jude Daly | Frontend Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <main class="container">
+        <header class="header">
+            <div class="title-container">
+                <h1>Jude Daly</h1>
+            </div>
+            <p class="tagline">Self Taught Developer</p>
+            <nav class="social-links">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                    <span class="sr-only">GitHub</span>
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <span class="sr-only">LinkedIn</span>
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-twitter"></i>
+                    <span class="sr-only">Twitter</span>
+                </a>
+            </nav>
+        </header>
+
+        <section class="projects">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                <article class="project-card project-card-eirpol">
+                    <div class="project-header">
+                        <div class="eirpol-shapes-background"></div>
+                        <h3>Eirpol</h3>
+                    </div>
+                    <p>Interactive D3.js visualizations exploring Irish politics, from the 34th Dáil to 1st Dáil.</p>
+                    <a href="eirpol.html" class="project-link">View Project</a>
+                </article>
+                <article class="project-card project-card-moonmapper">
+                    <div class="moon-background">
+                        <canvas class="moon-canvas"></canvas>
+                    </div>
+                    <div class="project-header">
+                        <h3>MoonMapper</h3>
+                    </div>
+                    <p>Crowdsourced lunar exploration—lend your compute power to run machine learning algorithms that scan the Moon for hidden anomalies.</p>
+                    <a href="moonmapper.html" class="project-link">View Project</a>
+                </article>
+                <article class="project-card project-card-drip">
+                    <div class="water-background">
+                        <div class="bucket">
+                            <div class="bucket-top"></div>
+                            <div class="bucket-body">
+                                <div class="water-fill"></div>
+                            </div>
+                        </div>
+                        <div class="water-wave wave1"></div>
+                        <div class="water-wave wave2"></div>
+                        <div class="water-wave wave3"></div>
+                        <div class="water-drop drop1"></div>
+                        <div class="water-drop drop2"></div>
+                        <div class="water-drop drop3"></div>
+                    </div>
+                    <div class="project-header">
+                        <h3>Drip</h3>
+                        <span class="status-badge">In Progress</span>
+                    </div>
+                    <p>A smart savings app that uses buckets and rules to help you manage your money. Watch your savings grow like water filling a bucket.</p>
+                    <div class="coming-soon">Coming Soon</div>
+                </article>
+            </div>
+        </section>
+
+        <section class="skills">
+            <h2>Skills</h2>
+            <div id="skills-graph"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p class="footer-text">Built with ❤️ by Jude Daly</p>
+                <p class="footer-text">© 2024 All Rights Reserved</p>
+            </div>
+            <nav class="footer-links">
+                <a href="mailto:your.email@example.com" class="footer-link">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+            </nav>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script src="skills-graph.js"></script>
+</body>
+</html> 
