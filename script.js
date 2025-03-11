@@ -421,87 +421,106 @@ if (!window.matchMedia('(hover: none)').matches) {
     });
 }
 
+// Create a dedicated function for the Eirpol animations that will be called on page load
+function initEirpolAnimation() {
+    console.log("Initializing Eirpol animation"); // Debug log
+    const eirpolCard = document.querySelector('.project-card-eirpol');
+    if (!eirpolCard) {
+        console.error("Eirpol card not found");
+        return;
+    }
+    
+    // Create floating shapes container if it doesn't exist
+    let shapesContainer = eirpolCard.querySelector('.eirpol-shapes');
+    if (!shapesContainer) {
+        console.log("Creating new shapes container");
+        shapesContainer = document.createElement('div');
+        shapesContainer.className = 'floating-shapes eirpol-shapes';
+        eirpolCard.insertBefore(shapesContainer, eirpolCard.firstChild);
+    }
+    
+    // Clear any existing shapes
+    shapesContainer.innerHTML = '';
+    console.log("Creating new shapes");
+    
+    // Create shapes with initial positions
+    const shapes = [];
+    for (let i = 0; i < 5; i++) {
+        const shape = document.createElement('div');
+        shape.className = `floating-shape shape-${i % 4 + 1}`;
+        
+        // Random size between 40px and 80px
+        const size = 40 + Math.random() * 40;
+        shape.style.width = `${size}px`;
+        shape.style.height = `${size}px`;
+        
+        // Set initial position (start from left, outside the card)
+        shape.style.left = `-${size}px`;
+        shape.style.top = `${20 + Math.random() * 60}%`;
+        
+        // Force a reflow before setting opacity to ensure transition works
+        shape.getBoundingClientRect();
+        shape.style.opacity = '0';
+        
+        shapes.push(shape);
+        shapesContainer.appendChild(shape);
+        console.log(`Created shape ${i + 1} with size ${size}px`);
+    }
+    
+    // Start animation after a small delay
+    console.log("Scheduling animation start");
+    requestAnimationFrame(() => {
+        shapes.forEach((shape, index) => {
+            const animateShape = () => {
+                console.log(`Animating shape ${index + 1}`);
+                
+                // Force a reflow before animation
+                shape.getBoundingClientRect();
+                
+                // Make visible with initial opacity
+                shape.style.opacity = '0.7';
+                
+                // Calculate final positions
+                const finalLeft = 20 + (Math.random() * 60);
+                const finalTop = 20 + (Math.random() * 60);
+                
+                // Move to final position
+                shape.style.left = `${finalLeft}%`;
+                shape.style.top = `${finalTop}%`;
+                
+                // Start floating animation
+                let y = finalTop;
+                let x = finalLeft;
+                let phase = index * (Math.PI / 2);
+                
+                const float = () => {
+                    phase += 0.002;
+                    x = finalLeft + Math.sin(phase) * 10;
+                    y = finalTop + Math.cos(phase) * 5;
+                    
+                    shape.style.left = `${x}%`;
+                    shape.style.top = `${y}%`;
+                    
+                    // Continue animation
+                    requestAnimationFrame(float);
+                };
+                
+                // Start floating animation
+                requestAnimationFrame(float);
+            };
+            
+            // Stagger the animations
+            setTimeout(animateShape, index * 300);
+        });
+    });
+}
+
 // Initialize floating shapes for Eirpol card and space background for MoonMapper
 document.querySelectorAll('.project-card').forEach(card => {
     const title = card.querySelector('h3').textContent;
     
     if (title === 'Eirpol') {
-        // Create floating shapes container
-        const shapesContainer = document.createElement('div');
-        shapesContainer.className = 'floating-shapes';
-        
-        // Create shapes with initial positions
-        const shapes = [];
-        for (let i = 0; i < 4; i++) {
-            const shape = document.createElement('div');
-            shape.className = `floating-shape shape-${i + 1}`;
-            
-            // Random size between 30px and 60px
-            const size = 30 + Math.random() * 30;
-            shape.style.width = `${size}px`;
-            shape.style.height = `${size}px`;
-            
-            // Initial position at right side, outside the card
-            shape.style.right = `-${size}px`;
-            shape.style.top = `${20 + (i * 20)}%`;
-            shape.style.left = 'auto'; // Clear any left position
-            
-            shapes.push(shape);
-            shapesContainer.appendChild(shape);
-        }
-        
-        card.appendChild(shapesContainer);
-        
-        // Add hover event listeners
-        card.addEventListener('mouseenter', () => {
-            card.classList.add('light-theme');
-            
-            // Animate shapes from right to left
-            shapes.forEach((shape, index) => {
-                setTimeout(() => {
-                    shape.style.transform = 'scale(1)';
-                    shape.style.transition = 'all 2s ease-out, transform 1.5s ease-out';
-                    
-                    // Calculate final position based on index (right to left)
-                    const finalRight = 60 - (index * 15); // Start from right side
-                    const finalTop = 20 + (index * 15);
-                    
-                    shape.style.right = `${finalRight}%`;
-                    shape.style.top = `${finalTop}%`;
-                    
-                    // Add gentle floating movement
-                    let y = finalTop;
-                    let right = finalRight;
-                    let phase = index * (Math.PI / 2);
-                    
-                    const float = () => {
-                        if (card.classList.contains('light-theme')) {
-                            phase += 0.002;
-                            y = finalTop + Math.sin(phase) * 5;
-                            right = finalRight + Math.cos(phase) * 3;
-                            shape.style.top = `${y}%`;
-                            shape.style.right = `${right}%`;
-                            requestAnimationFrame(float);
-                        }
-                    };
-                    
-                    float();
-                }, index * 200); // Slightly faster sequence
-            });
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.classList.remove('light-theme');
-            
-            // Animate shapes back to starting positions
-            shapes.forEach((shape, index) => {
-                setTimeout(() => {
-                    shape.style.transform = 'scale(0)';
-                    shape.style.right = `-${shape.offsetWidth}px`;
-                    shape.style.top = `${20 + (index * 20)}%`;
-                }, index * 150);
-            });
-        });
+        // Handled by dedicated function instead
     } else if (title === 'MoonMapper') {
         // Create space background
         const spaceBackground = document.createElement('div');
@@ -765,4 +784,19 @@ function createMoonBackground() {
 // Initialize moon background when DOM is loaded
 if (document.querySelector('.moon-canvas')) {
     createMoonBackground();
-} 
+}
+
+// Initialize animations when the DOM content is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM content loaded, initializing animations");
+    requestAnimationFrame(initEirpolAnimation);
+});
+
+// Also call the function directly in case the DOMContentLoaded event already fired
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    console.log("Document already loaded, initializing animations");
+    requestAnimationFrame(initEirpolAnimation);
+}
+
+console.log('Animation test');
+
