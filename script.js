@@ -1,3 +1,111 @@
+// Debug logging
+console.log('Script loading started');
+
+// Fallback function to show all elements if animations fail
+function showAllElements() {
+    console.log('Applying fallback - showing all elements');
+    document.querySelectorAll('.fade-in').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+    });
+}
+
+// Function to check if element is in viewport
+function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.bottom >= 0
+    );
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - Initializing animations');
+    
+    // Add js-loaded class to body
+    document.body.classList.add('js-loaded');
+    
+    try {
+        // Initialize fade-in animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        console.log(`Found ${fadeElements.length} fade-in elements`);
+        
+        if (fadeElements.length === 0) {
+            console.warn('No fade-in elements found. Check your HTML classes.');
+            showAllElements();
+            return;
+        }
+
+        if (!('IntersectionObserver' in window)) {
+            console.warn('IntersectionObserver not supported');
+            showAllElements();
+            return;
+        }
+        
+        // Immediately show elements that are already in viewport
+        fadeElements.forEach(element => {
+            if (isInViewport(element)) {
+                console.log('Element in viewport on load, showing immediately:', element);
+                element.classList.add('visible');
+            }
+        });
+        
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                        console.log('Element faded in:', entry.target);
+                    }
+                });
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            }
+        );
+        
+        // Start observing fade elements that aren't already visible
+        fadeElements.forEach(element => {
+            if (!element.classList.contains('visible')) {
+                observer.observe(element);
+                console.log('Now observing:', element);
+            }
+        });
+
+        // Fallback: If no animations after 3 seconds, show all elements
+        setTimeout(() => {
+            fadeElements.forEach(el => {
+                if (!el.classList.contains('visible')) {
+                    console.warn('Element not animated after 3s, forcing visible:', el);
+                    el.classList.add('visible');
+                }
+            });
+        }, 3000);
+
+    } catch (error) {
+        console.error('Error initializing animations:', error);
+        showAllElements();
+    }
+
+    // Initialize other animations if reduced motion is not preferred
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        try {
+            if (typeof initEirpolAnimation === 'function') {
+                requestAnimationFrame(initEirpolAnimation);
+            }
+            if (document.querySelector('.moon-canvas') && typeof createMoonBackground === 'function') {
+                createMoonBackground();
+            }
+        } catch (error) {
+            console.error('Error initializing project animations:', error);
+        }
+    }
+});
+
 // Add smooth scrolling for all anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -368,25 +476,60 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     });
 }
 
-// Optional: Add intersection observer for fade-in animations
+// Intersection Observer for fade-in animations
 const observerOptions = {
     root: null,
-    threshold: 0.1,
-    rootMargin: '0px'
+    rootMargin: '0px',
+    threshold: 0.2
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            // Once the animation is complete, we can stop observing the element
             observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-// Observe all project cards
-document.querySelectorAll('.project-card').forEach(card => {
-    observer.observe(card);
+// Observe all elements with fade-in class
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded');
+    
+    // Check if elements exist
+    console.log('Header:', document.querySelector('.header'));
+    console.log('Projects:', document.querySelector('.projects'));
+    console.log('Skills:', document.querySelector('.skills'));
+    
+    // Initialize animations
+    const fadeElements = document.querySelectorAll('.fade-in');
+    console.log('Fade elements found:', fadeElements.length);
+    
+    fadeElements.forEach(element => observer.observe(element));
+    
+    // Initialize Eirpol animations
+    console.log('Initializing Eirpol animations');
+    requestAnimationFrame(initEirpolAnimation);
+    
+    // Initialize moon background if canvas exists
+    const moonCanvas = document.querySelector('.moon-canvas');
+    console.log('Moon canvas found:', !!moonCanvas);
+    if (moonCanvas) {
+        console.log('Creating moon background');
+        createMoonBackground();
+    }
+
+    // Smooth scroll for the scroll indicator
+    const scrollIndicator = document.querySelector('.scroll-to-skills');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', () => {
+            const skillsSection = document.querySelector('.skills');
+            if (skillsSection) {
+                skillsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 });
 
 // Remove custom cursor code
@@ -784,18 +927,6 @@ function createMoonBackground() {
 // Initialize moon background when DOM is loaded
 if (document.querySelector('.moon-canvas')) {
     createMoonBackground();
-}
-
-// Initialize animations when the DOM content is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM content loaded, initializing animations");
-    requestAnimationFrame(initEirpolAnimation);
-});
-
-// Also call the function directly in case the DOMContentLoaded event already fired
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    console.log("Document already loaded, initializing animations");
-    requestAnimationFrame(initEirpolAnimation);
 }
 
 console.log('Animation test');
